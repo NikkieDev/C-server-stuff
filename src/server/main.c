@@ -8,7 +8,6 @@
 int main() {
 	int s = socket(AF_INET, SOCK_STREAM, 0);
 	int users = 0;
-	int running = 0;
 	
 	struct sockaddr_in addr = {
 		AF_INET,
@@ -19,15 +18,9 @@ int main() {
 	char greet[32];
 
 	bind(s, &addr, sizeof(addr));
-	running = 1;
-	int client_fd;
+	listen(s, 2);
 
-	while (running)
-	{
-		listen(s, 2);
-
-		client_fd = accept(s, 0, 0);
-	}
+	int client_fd = accept(s, 0, 0);
 	++users;
 	add_user(client_fd, users);
 	// user *new_user = make_user(1, 1);
