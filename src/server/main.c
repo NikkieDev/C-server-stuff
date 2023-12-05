@@ -3,11 +3,7 @@
 #include <sys/socket.h>
 #include <string.h>
 #include <stdio.h>
-
-typedef struct user {
-	int user_id;
-	int socket_fd;
-} user;
+#include "./user.h"
 
 int main() {	
 	int s = socket(AF_INET, SOCK_STREAM, 0);
@@ -24,14 +20,23 @@ int main() {
 
 	int client_fd = accept(s, 0, 0);
 
-	user new_user = { .user_id = 1, .socket_fd = client_fd };
+	user *new_user = make_user(1, 1);
 
-	char buffer[256];
+	char buffer[128];
+	char *pBuffer = &buffer;
 
-	recv(client_fd, buffer, 256, 0);
+	recv(client_fd, buffer, sizeof(buffer), 0);
 	printf("From client: %s\n", buffer);
 
-	sprintf(greet, "Welcome user %d\n", new_user.user_id);
+	int output;
+
+	int i = 0;
+	// for (i = 0; i < strlen(pBuffer); i++)
+	// {
+	// 	if (buffer[i])
+	// }
+
+	sprintf(greet, "Welcome user %d\n\0", new_user->user_id);
 	memset(buffer, 0, sizeof(buffer));
 
 	strcpy(buffer, greet);
