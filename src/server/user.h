@@ -7,5 +7,6 @@ typedef struct {
 } user;
 
 user *make_user(int user_id, int socket_fd);
+void add_user(int client_fd, int users);
 
 #endif // USER_H

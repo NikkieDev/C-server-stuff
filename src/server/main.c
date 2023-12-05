@@ -5,45 +5,52 @@
 #include <stdio.h>
 #include "./user.h"
 
-int main() {	
+int main() {
 	int s = socket(AF_INET, SOCK_STREAM, 0);
+	int users = 0;
+	int running = 0;
+	
 	struct sockaddr_in addr = {
 		AF_INET,
 		0x901f,
 		0
 	};
 
-	char greet[64];
+	char greet[32];
 
 	bind(s, &addr, sizeof(addr));
-	listen(s, 1);
+	running = 1;
+	int client_fd;
 
-	int client_fd = accept(s, 0, 0);
+	while (running)
+	{
+		listen(s, 2);
 
-	user *new_user = make_user(1, 1);
+		client_fd = accept(s, 0, 0);
+	}
+	++users;
+	add_user(client_fd, users);
+	// user *new_user = make_user(1, 1);
 
-	char buffer[128];
+	char buffer[32];
 	char *pBuffer = &buffer;
 
-	recv(client_fd, buffer, sizeof(buffer), 0);
-	printf("From client: %s\n", buffer);
+	// recv(client_fd, buffer, sizeof(buffer), 0);
+	// printf("From client: %s\n", buffer);
 
-	int output;
+	// make thread for new user
+	// while connected -> listen for options from user.
+	// on option receive, execute action.
+	// on action resolve, send resolved.
 
-	int i = 0;
-	// for (i = 0; i < strlen(pBuffer); i++)
-	// {
-	// 	if (buffer[i])
-	// }
+	// sprintf(greet, "Welcome user %d\n\0", new_user->user_id);
+	// memset(buffer, 0, sizeof(buffer));
 
-	sprintf(greet, "Welcome user %d\n\0", new_user->user_id);
-	memset(buffer, 0, sizeof(buffer));
+	// strcpy(buffer, greet);
+	// send(client_fd, buffer, sizeof(buffer), 0);
 
-	strcpy(buffer, greet);
-	send(client_fd, buffer, sizeof(buffer), 0);
-
-	close(client_fd);
-	close(s);
+	// close(client_fd);
+	// close(s);
 
 	return 1;
 }
