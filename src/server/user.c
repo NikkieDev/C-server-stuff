@@ -22,7 +22,7 @@ void listen_user(void *__client)
 
   bytes_received = recv(__pClient->socket_descriptor, __pClient->buffer, sizeof(__pClient->buffer), 0);
 
-  while (strncmp(__pClient->buffer, "options", sizeof(__pClient->buffer)) < 0) {
+  while (strncmp(__pClient->buffer, "options", sizeof(__pClient->buffer)) != 0) {
     bytes_received = recv(__pClient->socket_descriptor, __pClient->buffer, sizeof(__pClient->buffer), 0);
 
     strncpy(__pClient->buffer, "Options returning!\0", sizeof(__pClient->buffer));
