@@ -32,7 +32,9 @@ void listen_user(void *__client)
       send(__pClient->socket_descriptor, __pClient->buffer, sizeof(__pClient->buffer), 0);
   }
   
-  printf("\033[0;31m\n[%s]\n\t-socket_descript: %d\n\t-text-received: %s\n\t-bytes received: %ld\n", __pClient->thread_name, __pClient->socket_descriptor, __pClient->buffer, bytes_received);
+  printf("\033[0;31m\n[%s]\n\t-socket_descript: %d\n\t-text-received: %s\n\t-bytes received: %ld\n", \
+  __pClient->thread_name, __pClient->socket_descriptor, __pClient->buffer, bytes_received);
+
   printf("\033[0m");
   pthread_exit(NULL);
 }
