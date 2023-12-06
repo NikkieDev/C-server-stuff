@@ -1,7 +1,7 @@
 cc = gcc
 CFLAGS = -Wall -Wextra -std=c99
 
-all: clean server client
+all: clean server client runserver
 
 server: ./src/server/*.c
 	${CC} ${CFLAGS} ./src/server/*.c -o ./out/server
@@ -17,5 +17,5 @@ cleanserver:
 cleanclient:
 	rm -f ./out/client
 
-clearconsole:
-	clear
+runserver:
+	./out/server

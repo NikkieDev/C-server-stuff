@@ -23,10 +23,8 @@ int main() {
 	int client_fd = accept(s, 0, 0);
 	++users;
 	add_user(client_fd, users);
-	// user *new_user = make_user(1, 1);
 
 	char buffer[32];
-	char *pBuffer = &buffer;
 
 	// recv(client_fd, buffer, sizeof(buffer), 0);
 	// printf("From client: %s\n", buffer);
