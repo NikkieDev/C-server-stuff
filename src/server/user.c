@@ -1,6 +1,7 @@
 #include "./user.h"
 #include <pthread.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/socket.h>
 #include <string.h>
 
@@ -13,8 +14,6 @@ user *make_user(int user_id, int socket_fd)
 
   return pNew_user;
 }
-  // ssize_t bytes = recv(__client.socket_descriptor, __client.buffer, sizeof(__client.buffer), 0);
-  // printf("%ld", bytes);
 
 void listen_user(void *__client)
 {
@@ -22,6 +21,17 @@ void listen_user(void *__client)
   ssize_t bytes_received;
 
   bytes_received = recv(__pClient->socket_descriptor, __pClient->buffer, sizeof(__pClient->buffer), 0);
+  printf("%d", strncmp(__pClient->buffer, "options", sizeof(__pClient->buffer)));
+
+  while (!strncmp(__pClient->buffer, "options", sizeof(__pClient->buffer))) {
+    bytes_received = recv(__pClient->socket_descriptor, __pClient->buffer, sizeof(__pClient->buffer), 0);
+
+    strncpy(__pClient->buffer, "Options returning!\0", sizeof(__pClient->buffer));
+    memset(__pClient->buffer, 0, sizeof(__pClient->buffer));
+
+    if (strncmp(__pClient->buffer, "options", sizeof(__pClient->buffer)))
+      send(__pClient->socket_descriptor, __pClient->buffer, sizeof(__pClient->buffer), 0);
+  }
   
   printf("\033[0;31m\n[%s]\n\t-socket_descript: %d\n\t-text-received: %s\n\t-bytes received: %ld\n", __pClient->thread_name, __pClient->socket_descriptor, __pClient->buffer, bytes_received);
   printf("\033[0m");
