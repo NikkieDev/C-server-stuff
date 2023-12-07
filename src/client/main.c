@@ -3,21 +3,21 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include <stdio.h>
+#include "connection.h"
 
 int main()
 {
-  int s = socket(AF_INET, SOCK_STREAM, 0);
+  int s = try_connect();
   char write_buffer[128], read_buffer[128];
 
-  strncpy(write_buffer, "options\0", sizeof(write_buffer));
+  while (s == 10001) {
+    printf("Couldn't connect, retrying...\n");
+    fflush(stdout);
+    sleep(3);
+    s = try_connect();
+  }
 
-  struct sockaddr_in addr = {
-      AF_INET,
-      0x901f
-  };
-  
-  inet_pton(AF_INET, "127.0.0.1", &addr.sin_addr);
-  connect(s, &addr, sizeof(addr));
+  strncpy(write_buffer, "options\0", sizeof(write_buffer));
 
   printf("receiving first\n");
   recv(s, read_buffer, sizeof(read_buffer), 0); // receive "Welcome" as nullterminated string from server

@@ -19,8 +19,9 @@ int main() {
 	listen(s, 2);
 
 	int client_fd = accept(s, 0, 0);
-	++users;
-	add_user(client_fd, users);
+	client user = add_user(client_fd, &users);
+	client *p_user = &user;
+	initialize_user(p_user, users);
 
 	// make thread for new user
 	// while connected -> listen for options from user.

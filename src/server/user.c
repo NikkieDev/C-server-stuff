@@ -5,16 +5,6 @@
 #include <sys/socket.h>
 #include <string.h>
 
-user *make_user(int user_id, int socket_fd)
-{
-  user *pNew_user = malloc(sizeof(user));
-
-  pNew_user->user_id = user_id;
-  pNew_user->socket_fd = socket_fd;
-
-  return pNew_user;
-}
-
 void listen_user(void *__client)
 {
   client *__pClient = (client *)__client; // point to client pointer
@@ -52,22 +42,27 @@ void listen_user(void *__client)
   pthread_exit(NULL);
 }
 
-void add_user(int client_fd, int users)
+void initialize_user(client *__client, int users)
 {
   pthread_t thid;
-  client *p_client = malloc(sizeof(client));
-
   char *thread_name = malloc(9 + sizeof(users));
-  snprintf(thread_name, 9 + sizeof(users), "thread-%d", users);
 
-  strncpy(p_client->thread_name, thread_name, 9 + sizeof(users));
-  p_client->socket_descriptor = client_fd;
+  snprintf(thread_name, 9 + sizeof(users), "thread-%d", users);
+  strncpy(__client->thread_name, thread_name, 9 + sizeof(users));
 
   printf("\nCreating %s", thread_name);
 
-  pthread_create(&thid, NULL, listen_user, p_client);
+  pthread_create(&thid, NULL, listen_user, __client);
   pthread_join(thid, NULL);
 
   free(thread_name);
-  free(p_client);
+}
+
+client add_user(int client_fd, int users)
+{
+  client user = {
+    .socket_descriptor = client_fd
+  };
+
+  return user;
 }
