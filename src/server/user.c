@@ -28,7 +28,7 @@ void listen_user(void *__client)
   printf("\nsending welcome packet\n");
 
   send(__pClient->socket_descriptor, __pClient->buffer, client_buffer, 0);
-  memset(__pClient->buffer, 0, sizeof(__pClient->buffer));
+  // memset(__pClient->buffer, 0, sizeof(__pClient->buffer)); // only necessary when not overwriting shortly after. Use when variable is only needed later and can be cleared
 
   recv(__pClient->socket_descriptor, __pClient->buffer, client_buffer, 0);
 

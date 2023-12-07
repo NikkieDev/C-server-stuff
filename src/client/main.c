@@ -27,7 +27,6 @@ int main()
   recv(s, read_buffer, sizeof(read_buffer), 0); // Try receiving server responding message
   while (strncmp(read_buffer, "Success!", sizeof(read_buffer)))
   {
-    memset(read_buffer, 0, sizeof(read_buffer));
     recv(s, read_buffer, sizeof(read_buffer), 0);
   }
 
