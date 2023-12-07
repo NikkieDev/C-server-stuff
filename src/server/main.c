@@ -15,8 +15,6 @@ int main() {
 		0
 	};
 
-	char greet[32];
-
 	bind(s, &addr, sizeof(addr));
 	listen(s, 2);
 
@@ -24,24 +22,11 @@ int main() {
 	++users;
 	add_user(client_fd, users);
 
-	char buffer[32];
-
-	// recv(client_fd, buffer, sizeof(buffer), 0);
-	// printf("From client: %s\n", buffer);
-
 	// make thread for new user
 	// while connected -> listen for options from user.
 	// on option receive, execute action.
 	// on action resolve, send resolved.
 
-	// sprintf(greet, "Welcome user %d\n\0", new_user->user_id);
-	// memset(buffer, 0, sizeof(buffer));
-
-	// strcpy(buffer, greet);
-	// send(client_fd, buffer, sizeof(buffer), 0);
-
-	// close(client_fd);
-	// close(s);
-
+	close(s);
 	return 1;
 }
